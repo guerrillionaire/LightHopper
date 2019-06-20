@@ -20,7 +20,7 @@ class Gui:
         self.hint = tkinter.Label(self.inner, text="Note: All *'s will be randomized if present", bg=self.bg_col, fg=self.fg_col)
         self.lower = tkinter.Frame(self.root, pady=30, bg=self.bg_col)
         self.gen_button = tkinter.Button(self.lower, text="Begin", command=lambda: self.begin(self.initial.get()),
-                                         bg=self.bg_col, fg=self.fg_col)
+                                         bg=self.bg_col, fg=self.fg_col, width=15)
 
         self.inner.pack()
         self.lower.pack()
@@ -49,6 +49,8 @@ class Gui:
         webbrowser.open_new_tab(self.current_url.get())
 
     def begin(self, current):
+        if current is "" or current is None:
+            return
         print("Debug", current)
         self.current_url.set(current)
         self.current_url_label = tkinter.Label(self.lower, textvariable=self.current_url,
