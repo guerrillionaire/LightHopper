@@ -15,9 +15,9 @@ class Gui:
         self.root.minsize(300, 50)
         self.inner = tkinter.Frame(self.root, pady=10, bg=self.bg_col)
         self.welcome = tkinter.Label(self.inner, text="Source URL: ", bg=self.bg_col, fg=self.fg_col)
-        self.initial = tkinter.Entry(self.inner, bg=self.bg_col, fg=self.fg_col)
+        self.initial = tkinter.Entry(self.inner, bg=self.bg_col, fg=self.fg_col, width=35)
         self.current_url = tkinter.StringVar("")
-
+        self.hint = tkinter.Label(self.inner, text="Note: All *'s will be randomized if present", bg=self.bg_col, fg=self.fg_col)
         self.lower = tkinter.Frame(self.root, pady=30, bg=self.bg_col)
         self.gen_button = tkinter.Button(self.lower, text="Begin", command=lambda: self.begin(self.initial.get()),
                                          bg=self.bg_col, fg=self.fg_col)
@@ -26,6 +26,7 @@ class Gui:
         self.lower.pack()
         self.welcome.grid(row=0, column=0)
         self.initial.grid(row=0, column=1)
+        self.hint.grid(row=1, column=1)
         self.gen_button.grid(row=1, column=1)
 
         #BUTTONS
@@ -61,10 +62,19 @@ class Gui:
         self.current_url_label.grid(row=0, column=1)
 
     def random(self):
-        url = self.current_url.get()[0:len(self.current_url.get())-6]
         new_id = ""
-        for s in random.sample(self.range, 6):
-            new_id += s
+        if "*" in self.initial.get():
+            for c in self.initial.get():
+                if c is "*":
+                    new_id += random.sample(self.range, 1)[0]
+
+            url = self.initial.get().replace("*", "")
+            pass
+        else:
+            url = self.current_url.get()[0:len(self.current_url.get()) - 6]
+            for s in random.sample(self.range, 6):
+                new_id += s
+
         self.current_url.set(url+new_id)
         print(self.current_url.get())
 
